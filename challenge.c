@@ -59,45 +59,8 @@ struct ListNode* createNode(int val) {
     node->val = val;
     node->next = NULL;
     return node;
-}
 
-/**
- * Prints the entire linked list.
- */
-void printList(struct ListNode* head) {
-    while (head != NULL) {
-        printf("%d ", head->val);
-        head = head->next;
-    }
-    printf("\n");
-}
 
-/**
- * Quick test for the merge function.
- */
-int main() {
-    // list1 = [1, 2, 4]
-    struct ListNode* list1 = createNode(1);
-    list1->next = createNode(2);
-    list1->next->next = createNode(4);
-
-    // list2 = [1, 3, 4]
-    struct ListNode* list2 = createNode(1);
-    list2->next = createNode(3);
-    list2->next->next = createNode(4);
-
-    printf("List 1: ");
-    printList(list1);
-    printf("List 2: ");
-    printList(list2);
-
-    struct ListNode* merged = mergeTwoLists(list1, list2);
-
-    printf("Merged: ");
-    printList(merged);
-
-    return 0;
-}
 
 /**
  * Reflection:
