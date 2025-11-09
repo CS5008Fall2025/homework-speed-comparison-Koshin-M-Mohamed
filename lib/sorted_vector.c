@@ -1,9 +1,9 @@
 /**
  * Contains functions for the sorted vector struct
  *
- * @author: STUDENT ADD YOUR NAME
+ * @author: Koshin Mohamed
  * @class: CS 5008
- * @term: UPDATE WITH CURRENT SEMESTER
+ * @term: Fall 2025
 **/
 
 #include "vector.h"
@@ -24,7 +24,16 @@
  * @param movie the movie to add
 */
 void add_to_sorted_vector(SortedMovieVector * vector, Movie * movie) {
-    // STUDENT TODO: implement this function
+ if (vector == NULL || movie == NULL) return;
+
+    int index = 0;
+    while (index < vector->size && compare_movies(vector->movies[index], movie) < 0) {
+        index++;
+    }
+
+    // vector_insert handles resizing + shifting automatically
+    vector_insert(vector, movie, index);
+
 }
 
 /**
@@ -43,9 +52,13 @@ void add_to_sorted_vector(SortedMovieVector * vector, Movie * movie) {
  * @return the movie if found, NULL otherwise
  */
 Movie * find_in_sorted_vector(SortedMovieVector * vector, const char * title) {
-    // STUDENT TODO: implement this function
+   if (vector == NULL || title == NULL) return NULL;
 
-    // if the movie is not found, return NULL
+    for (int i = 0; i < vector->size; i++) {
+        int cmp = strcasecmp(vector->movies[i]->title, title);
+        if (cmp == 0) return vector->movies[i];
+        if (cmp > 0) break;
+    }
     return NULL;
 }
 
@@ -65,7 +78,14 @@ Movie * find_in_sorted_vector(SortedMovieVector * vector, const char * title) {
  * @return the movie removed, NULL otherwise
  */
 Movie* sorted_vector_remove(SortedMovieVector *vector, const char *title){
-    // STUDENT TODO: implement this function
+ if (vector == NULL || title == NULL) return NULL;
 
-    return NULL; // not found
+    for (int i = 0; i < vector->size; i++) {
+        int cmp = strcasecmp(vector->movies[i]->title, title);
+        if (cmp == 0) {
+            return vector_remove(vector, i);
+        }
+        if (cmp > 0) break;
+    }
+    return NULL;
 }

@@ -1,13 +1,13 @@
 /**
  * Basic BST implementation.
  *
- * @author: STUDENT ADD YOUR NAME
+ * @author:Koshin Mohamed 
  * @class: CS 5008
- * @term: UPDATE WITH CURRENT SEMESTER
+ * @term:Fall 2025
  */
 
 #include <stdbool.h>
-#include <stdlib.h>
+#include <stdlib.h> 
 #include <string.h>
 
 #include "bst.h"
@@ -51,7 +51,8 @@ void __bst__free_node(BSTNode * node, bool clear) {
     if (node == NULL) {
         return;
     }
-    // STUDENT TODO: update this comment - is this, pre, post, or in order traversal?
+// this is post-order because it frees the left side first, then the right side, 
+// and only after that it frees the current node itself
     __bst__free_node(node->left, clear);
     __bst__free_node(node->right, clear);
     if (clear) {
@@ -91,8 +92,27 @@ void clear_and_free_bst(BST * bst) {
  * @param movie the movie to add 
 */
 void __bst__add(BSTNode * curr, Movie * movie) {
-   // STUDENT TODO: implement this function
+   if (curr == NULL || movie == NULL) return;
+int cmp = compare_movies(movie, curr->movie);
+   
+// go left if smaller
+    if (cmp < 0){
+        if (curr->left == NULL) {
+            curr->left = __bst__new_node(movie);
+        } else{
+            __bst__add(curr->left, movie);
+        }
+    } 
+    // go right if larger
+    else if (cmp > 0){
+        if (curr->right == NULL) {
+            curr->right = __bst__new_node(movie);
+        } else {
+            __bst__add(curr->right, movie);
+        }
+    }
 }
+
 /**
  * Adds the given movie into the BST. 
  * Handles the root case, but then calls the recursive helper
@@ -185,9 +205,20 @@ void bst_remove(BST * bst, Movie * movie) {
  * @return the node that was found
 */
 BSTNode * __bst__find(BSTNode * curr, const char * title) {
-   // STUDENT TODO: implement this function
-
-   return NULL; // STUDENT TODO: update this return statement if needed
+   if (curr == NULL || title == NULL){
+        return NULL;
+    }
+ int cmp = strcasecmp(title, curr->movie->title);
+        if (cmp == 0) {
+        return curr;
+// go left if title comes before current movie
+    } else if (cmp < 0){
+         return __bst__find(curr->left, title);
+    } 
+// go right if title comes after current movie
+    else {
+         return __bst__find(curr->right, title);
+    }
 }
 
 /**
@@ -250,7 +281,19 @@ char * __bst__update_str(Movie * movie, char * str) {
  * @return the string that was appended to
 */
 char * __bst__to_str_postorder(BSTNode * curr, char * str) {
-    // STUDENT TODO: implement this function
+    if (curr == NULL){
+        return str;
+    }
+
+    // go left first
+    str = __bst__to_str_postorder(curr->left, str);
+
+    // then right
+    str = __bst__to_str_postorder(curr->right, str);
+
+    //  process the current node
+    str = __bst__update_str(curr->movie, str);    
+    
     return str;
 }
 
@@ -266,7 +309,18 @@ char * __bst__to_str_postorder(BSTNode * curr, char * str) {
  *
  */
 char * __bst__to_str_preorder(BSTNode * curr, char * str) {
-    // STUDENT TODO: implement this function
+  if (curr == NULL){
+        return str;
+    }
+    // current node first
+    str = __bst__update_str(curr->movie, str);
+
+    // then go left
+    str = __bst__to_str_preorder(curr->left, str);
+
+    // then right
+    str = __bst__to_str_preorder(curr->right, str);
+
     return str;
 }
 
@@ -282,7 +336,18 @@ char * __bst__to_str_preorder(BSTNode * curr, char * str) {
  * @return the string that was appended to
 */
 char * __bst__to_str_inorder(BSTNode * curr, char * str) {
-    // STUDENT TODO: implement this function
+    if (curr == NULL){
+        return str;
+    }
+    //left side first
+    str = __bst__to_str_inorder(curr->left, str);
+
+    // then process the current movie
+    str = __bst__update_str(curr->movie, str);
+
+    // right side
+    str = __bst__to_str_inorder(curr->right, str);    
+    
     return str;
 }
 
@@ -301,7 +366,7 @@ char * __bst__to_str_breadth_first(BST * tree, char * str) {
     if (tree->root == NULL) {
         return str;
     }
-    BSTNode ** queue = malloc(sizeof(BSTNode) * tree->size+1);
+BSTNode ** queue = malloc(sizeof(BSTNode *) * (tree->size * 2 + 1));
     queue[0] = tree->root;
     int front = 0;
     int back = 1;
@@ -364,7 +429,19 @@ char * bst_to_str(BST * tree, int traversal) {
  * 
 */
 void __bst__to_sorted_array(BSTNode * curr, Movie ** array, int * index) {
-    // STUDENT TODO: implement this function
+ if (curr == NULL){
+        return;
+    }
+
+    // visit left side first
+    __bst__to_sorted_array(curr->left, array, index);
+
+    // add the current movie to the array
+    array[*index] = curr->movie;
+    (*index)++;
+
+    // right side last
+    __bst__to_sorted_array(curr->right, array, index);
 }
 
 /**

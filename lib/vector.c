@@ -46,7 +46,7 @@ void clear_and_free_vector(MovieVector *vector) {
     free(vector);
 }
 
-
+ 
 /**
  * Doubles the size of the vector for reallocation.
  * 
@@ -200,7 +200,7 @@ bool vector_is_empty(MovieVector *vector) {
  * @return the string representation
 */
 char *vector_to_str(MovieVector *vector) {
-    char *str = (char *)malloc(sizeof(char) * (MAX_MOVIE_STR_LEN + 3) * vector->size);
+char *str = malloc(sizeof(char) * ((MAX_MOVIE_STR_LEN + 5) * (vector->size + 1)));
     if (vector->size == 0){
         strcpy(str, "[]");
         return str; // early exit
@@ -218,3 +218,5 @@ char *vector_to_str(MovieVector *vector) {
     strcat(str, "]");
     return str;
 }
+
+

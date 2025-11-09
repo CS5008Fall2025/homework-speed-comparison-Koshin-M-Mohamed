@@ -29,6 +29,9 @@
  * This is a helper function to print the help message
 */
 void print_help() {
+    
+// This function prints all the info for how to use the program.
+// It shows every available flag and gives example commands.
     printf("Usage: ./speed_compare [OPTIONS] input_file\n");
 
     printf("This program compares the speed of the SortedLinkedList, SortedVector, and BST implementations\n");
@@ -57,6 +60,9 @@ void print_help() {
  * @return true if -h or --help is in the arguments, false otherwise
 */
 bool check_for_help(const int argc, const char** argv) {
+// This goes through every argument passed to the program.
+// If the user typed -h or --help, 
+// it returns true so the program can print the help text and quit.
     for (int i = 0; i < argc; i++)
     {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
@@ -74,6 +80,9 @@ bool check_for_help(const int argc, const char** argv) {
  * @param str the string to check
  * @return true if the string is an int, false otherwise
  */
+
+// This function checks if a given string is made of only digits.
+// It helps confirm that the increment argument (-i) is a valid number
 int is_int(const char *str)
 {
     while (*str)
@@ -97,6 +106,9 @@ int is_int(const char *str)
  * @return the input file if found, NULL otherwise
  * 
 */
+// This is the main argument parser. It reads all command-line inputs.
+// It handles debug mode, verbose mode, output filename, and increment value.
+// Anything left over after the flags is treated as the input movie file.
 const char * process_args(const int argc, const char** argv) {
     const char * input_file = NULL;
     for (int i = 0; i < argc; i++) {
@@ -139,6 +151,8 @@ const char * process_args(const int argc, const char** argv) {
  * @param argc the number of arguments
  * @param argv the arguments
 */
+// Main function that loads movies, runs performance tests on all data structures,
+// and saves the timing results into a CSV file so you can graph them later.
 int main(int argc, const char** argv) {
     if (argc < 2)
     {
